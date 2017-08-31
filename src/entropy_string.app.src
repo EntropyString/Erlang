@@ -1,0 +1,16 @@
+{application, entropy_string
+,[{pkg_name, "entropy_string_erl"}
+ ,{description, "Efficiently generate cryptographically strong random strings of specified entropy from various character sets."}
+ ,{vsn, "1.0.0"}
+ ,{registered, []}
+ ,{applications
+  ,[kernel
+   ,stdlib
+   ,crypto
+   ]}
+ ,{env,[]}
+ ,{modules, []}
+ ,{maintainers, ["Paul Rogers"]}
+ ,{licenses, ["MIT"]}
+ ,{links, ["GitHub", "https://github.com/EntropyString/Erlang"]}
+ ]}.

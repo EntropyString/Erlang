@@ -1,0 +1,7 @@
+
+@author Paul Rogers <paul@knoxen.com>
+
+@copyright 2017 Knoxen
+@version 1.0.0
+@title EntropyString for Erlang
+@doc Efficiently generate cryptographically strong random strings of specified entropy from various character sets.

@@ -1,0 +1,394 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Module entropy_string</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css" title="EDoc">
+</head>
+<body bgcolor="white">
+<div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<hr>
+
+<h1>Module entropy_string</h1>
+<ul class="index"><li><a href="#description">Description</a></li><li><a href="#types">Data Types</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>
+  Efficiently generate cryptographically strong random strings of specified entropy from various
+  character sets.
+
+<p><b>Authors:</b> Paul Rogers
+ 
+ ==================================================================================================.</p>
+
+<h2><a name="description">Description</a></h2>
+  Efficiently generate cryptographically strong random strings of specified entropy from various
+  character sets.
+ 
+<h2><a name="types">Data Types</a></h2>
+
+<h3 class="typedecl"><a name="type-charset">charset()</a></h3>
+<p><tt>charset() = binary()</tt></p>
+
+
+<h3 class="typedecl"><a name="type-reason">reason()</a></h3>
+<p><tt>reason() = binary()</tt></p>
+
+
+<h2><a name="index">Function Index</a></h2>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#bits-2">bits/2</a></td><td>Entropy bits required for total number of strings with given risk.</td></tr>
+<tr><td valign="top"><a href="#bits_per_char-1">bits_per_char/1</a></td><td>Entropy bits per character.</td></tr>
+<tr><td valign="top"><a href="#bytes_needed-2">bytes_needed/2</a></td><td>Bytes needed to form string of entropy <b>Bits</b> from characters in <b>CharSet</b>
+    <ul>
+      <li><b>Bits</b> - Entropy bits for string</li>
+      <li><b>CharSet</b> - Characters in use</li>
+    </ul></td></tr>
+<tr><td valign="top"><a href="#charset16-0">charset16/0</a></td><td>  
+Hexadecimal character set.</td></tr>
+<tr><td valign="top"><a href="#charset2-0">charset2/0</a></td><td>  
+Binary character set.</td></tr>
+<tr><td valign="top"><a href="#charset32-0">charset32/0</a></td><td>  
+Base 32 character set.</td></tr>
+<tr><td valign="top"><a href="#charset4-0">charset4/0</a></td><td>  
+DNA alphabet.</td></tr>
+<tr><td valign="top"><a href="#charset64-0">charset64/0</a></td><td>
+  URl and file system safe CharSet from <a href="https://tools.ietf.org/html/rfc4648#section-5">RFC 4648</a>.</td></tr>
+<tr><td valign="top"><a href="#charset8-0">charset8/0</a></td><td>  
+Octal character set.</td></tr>
+<tr><td valign="top"><a href="#large_id-0">large_id/0</a></td><td>Large ID
+  Returns random string with a 1 in a trillion chance of repeat in a billion strings using
+  the predefined base 32 characters.</td></tr>
+<tr><td valign="top"><a href="#large_id-1">large_id/1</a></td><td>Large ID
+    <ul>
+      <li><b>CharSet</b> - Characters to use</li>
+    </ul>
+ 
+  Returns random string with a 1 in a trillion chance of repeat in a billion strings.</td></tr>
+<tr><td valign="top"><a href="#medium_id-0">medium_id/0</a></td><td>Medium ID
+  Returns random string with a 1 in a billion chance of repeat in a million strings using
+  the predefined base 32 characters.</td></tr>
+<tr><td valign="top"><a href="#medium_id-1">medium_id/1</a></td><td>Medium ID
+    <ul>
+      <li><b>CharSet</b> - Characters to use</li>
+    </ul>
+ 
+  Returns random string with a 1 in a billion chance of repeat in a million strings.</td></tr>
+<tr><td valign="top"><a href="#random_string-1">random_string/1</a></td><td>String of Bits entropy from predefined base 32 charset
+    <ul>
+      <li><b>Bits</b> - Entropy bits for string</li>
+    </ul></td></tr>
+<tr><td valign="top"><a href="#random_string-2">random_string/2</a></td><td>String of Bits entropy from CharSet
+    <ul>
+      <li><b>Bits</b> - Entropy bits for string</li>
+      <li><b>CharSet</b> - Characters to use</li>
+    </ul></td></tr>
+<tr><td valign="top"><a href="#random_string-3">random_string/3</a></td><td>String of Bits entropy from CharSet using Bytes
+    <ul>
+      <li><b>Bits</b> - Entropy bits for string</li>
+      <li><b>CharSet</b> - Characters to use</li>
+      <li><b>Bytes</b> - Bytes to use</li>
+    </ul></td></tr>
+<tr><td valign="top"><a href="#session_id-0">session_id/0</a></td><td>Session ID
+  Returns random string suitable for 128-bit OWASP Session ID using predefined base 32 characters.</td></tr>
+<tr><td valign="top"><a href="#session_id-1">session_id/1</a></td><td>Session ID
+    <ul>
+      <li><b>CharSet</b> - Characters to use</li>
+    </ul>
+ 
+  Returns random string suitable for 128-bit OWASP Session ID.</td></tr>
+<tr><td valign="top"><a href="#small_id-0">small_id/0</a></td><td>Small ID
+  Returns random string with a 1 in a million chance of repeat in 30 strings using the predefined
+  base 32 characters.</td></tr>
+<tr><td valign="top"><a href="#small_id-1">small_id/1</a></td><td>Small ID
+    <ul>
+      <li><b>CharSet</b> - Characters to use</li>
+    </ul>
+ 
+  Returns random string with a 1 in a million chance of repeat in 30 strings.</td></tr>
+<tr><td valign="top"><a href="#ten_p-1">ten_p/1</a></td><td>Power of ten.</td></tr>
+<tr><td valign="top"><a href="#token-0">token/0</a></td><td>Token
+  Returns random string with 256 bits of entropy using predefined URL and file system safe
+  characters.</td></tr>
+<tr><td valign="top"><a href="#token-1">token/1</a></td><td>Token
+    <ul>
+      <li><b>CharSet</b> - Characters to use</li>
+    </ul>
+ 
+  Returns random string with 256 bits of entropy.</td></tr>
+<tr><td valign="top"><a href="#valid_bytes-3">valid_bytes/3</a></td><td>Validate Bytes
+    <ul>
+      <li><b>Bits</b> - Entropy bits for string</li>
+      <li><b>CharSet</b> - Characters in use</li>
+      <li><b>Bytes</b> - Bytes in use</li>
+    </ul>
+    Validates:
+    <ul>
+      <li>Bytes must be sufficient to generate entropy Bits string from CharSet</li>
+    </ul></td></tr>
+<tr><td valign="top"><a href="#valid_charset-1">valid_charset/1</a></td><td>Validate CharSet
+    <ul>
+      <li><b>CharSet</b> - Characters to use</li>
+    </ul>
+    Validates:
+    <ul>
+      <li>CharSet must have 2, 4, 8, 16, 32, or 64 characters</li>
+      <li>Characters must by unique</li>
+    </ul></td></tr>
+</table>
+
+<h2><a name="functions">Function Details</a></h2>
+
+<h3 class="function"><a name="bits-2">bits/2</a></h3>
+<div class="spec">
+<p><tt>bits(Total, Risk) -&gt; Bits</tt>
+<ul class="definitions"><li><tt>Total = number()</tt></li><li><tt>Risk = number()</tt></li><li><tt>Bits = nan | integer()</tt></li></ul></p>
+</div><p>Entropy bits required for total number of strings with given risk.
+    <ul>
+      <li><b>Total</b> - Total number of strings</li>
+      <li><b>Risk</b> - Risk of repeat in Total strings</li>
+    </ul></p>
+
+<h3 class="function"><a name="bits_per_char-1">bits_per_char/1</a></h3>
+<div class="spec">
+<p><tt>bits_per_char(CharSet) -&gt; Bits</tt>
+<ul class="definitions"><li><tt>CharSet = <a href="#type-charset">charset()</a></tt></li><li><tt>Bits = integer()</tt></li></ul></p>
+</div><p>Entropy bits per character.
+    <ul>
+      <li><b>CharSet</b> - Characters in use</li>
+    </ul></p>
+
+<h3 class="function"><a name="bytes_needed-2">bytes_needed/2</a></h3>
+<div class="spec">
+<p><tt>bytes_needed(Bits, CharSet) -&gt; ByteCount</tt>
+<ul class="definitions"><li><tt>Bits = integer()</tt></li><li><tt>CharSet = <a href="#type-charset">charset()</a></tt></li><li><tt>ByteCount = integer()</tt></li></ul></p>
+</div><p>Bytes needed to form string of entropy <b>Bits</b> from characters in <b>CharSet</b>
+    <ul>
+      <li><b>Bits</b> - Entropy bits for string</li>
+      <li><b>CharSet</b> - Characters in use</li>
+    </ul></p>
+
+<h3 class="function"><a name="charset16-0">charset16/0</a></h3>
+<div class="spec">
+<p><tt>charset16() -&gt; String</tt>
+<ul class="definitions"><li><tt>String = <a href="#type-charset">charset()</a></tt></li></ul></p>
+</div><p><p>  
+Hexadecimal character set.</p>
+ 
+    <b>0123456789abcdef</b>
+ </p>
+
+<h3 class="function"><a name="charset2-0">charset2/0</a></h3>
+<div class="spec">
+<p><tt>charset2() -&gt; String</tt>
+<ul class="definitions"><li><tt>String = <a href="#type-charset">charset()</a></tt></li></ul></p>
+</div><p><p>  
+Binary character set.</p>
+ 
+    <b>01</b>
+ </p>
+
+<h3 class="function"><a name="charset32-0">charset32/0</a></h3>
+<div class="spec">
+<p><tt>charset32() -&gt; String</tt>
+<ul class="definitions"><li><tt>String = <a href="#type-charset">charset()</a></tt></li></ul></p>
+</div><p><p>  
+Base 32 character set.</p>
+ 
+    <b>2346789bdfghjmnpqrtBDFGHJLMNPQRT</b>
+ </p>
+
+<h3 class="function"><a name="charset4-0">charset4/0</a></h3>
+<div class="spec">
+<p><tt>charset4() -&gt; String</tt>
+<ul class="definitions"><li><tt>String = <a href="#type-charset">charset()</a></tt></li></ul></p>
+</div><p><p>  
+DNA alphabet.</p>
+ 
+    <b>ATCG</b>
+ </p>
+
+<h3 class="function"><a name="charset64-0">charset64/0</a></h3>
+<div class="spec">
+<p><tt>charset64() -&gt; String</tt>
+<ul class="definitions"><li><tt>String = <a href="#type-charset">charset()</a></tt></li></ul></p>
+</div><p><p>
+  URl and file system safe CharSet from <a href="https://tools.ietf.org/html/rfc4648#section-5">RFC 4648</a>.</p>
+ 
+    <b>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_</b>
+ </p>
+
+<h3 class="function"><a name="charset8-0">charset8/0</a></h3>
+<div class="spec">
+<p><tt>charset8() -&gt; String</tt>
+<ul class="definitions"><li><tt>String = <a href="#type-charset">charset()</a></tt></li></ul></p>
+</div><p><p>  
+Octal character set.</p>
+ 
+    <b>01234567</b>
+ </p>
+
+<h3 class="function"><a name="large_id-0">large_id/0</a></h3>
+<div class="spec">
+<p><tt>large_id() -&gt; String</tt>
+<ul class="definitions"><li><tt>String = binary()</tt></li></ul></p>
+</div><p>Large ID
+  Returns random string with a 1 in a trillion chance of repeat in a billion strings using
+  the predefined base 32 characters.</p>
+
+<h3 class="function"><a name="large_id-1">large_id/1</a></h3>
+<div class="spec">
+<p><tt>large_id(CharSet) -&gt; String</tt>
+<ul class="definitions"><li><tt>CharSet = <a href="#type-charset">charset()</a></tt></li><li><tt>String = binary() | {error, <a href="#type-reason">reason()</a>}</tt></li></ul></p>
+</div><p>Large ID
+    <ul>
+      <li><b>CharSet</b> - Characters to use</li>
+    </ul>
+ 
+  Returns random string with a 1 in a trillion chance of repeat in a billion strings.</p>
+
+<h3 class="function"><a name="medium_id-0">medium_id/0</a></h3>
+<div class="spec">
+<p><tt>medium_id() -&gt; String</tt>
+<ul class="definitions"><li><tt>String = binary()</tt></li></ul></p>
+</div><p>Medium ID
+  Returns random string with a 1 in a billion chance of repeat in a million strings using
+  the predefined base 32 characters.</p>
+
+<h3 class="function"><a name="medium_id-1">medium_id/1</a></h3>
+<div class="spec">
+<p><tt>medium_id(CharSet) -&gt; String</tt>
+<ul class="definitions"><li><tt>CharSet = <a href="#type-charset">charset()</a></tt></li><li><tt>String = binary() | {error, <a href="#type-reason">reason()</a>}</tt></li></ul></p>
+</div><p>Medium ID
+    <ul>
+      <li><b>CharSet</b> - Characters to use</li>
+    </ul>
+ 
+  Returns random string with a 1 in a billion chance of repeat in a million strings.</p>
+
+<h3 class="function"><a name="random_string-1">random_string/1</a></h3>
+<div class="spec">
+<p><tt>random_string(Bits) -&gt; String</tt>
+<ul class="definitions"><li><tt>Bits = integer()</tt></li><li><tt>String = binary()</tt></li></ul></p>
+</div><p>String of Bits entropy from predefined base 32 charset
+    <ul>
+      <li><b>Bits</b> - Entropy bits for string</li>
+    </ul></p>
+
+<h3 class="function"><a name="random_string-2">random_string/2</a></h3>
+<div class="spec">
+<p><tt>random_string(Bits, CharSet) -&gt; String</tt>
+<ul class="definitions"><li><tt>Bits = integer()</tt></li><li><tt>CharSet = <a href="#type-charset">charset()</a></tt></li><li><tt>String = binary() | {error, <a href="#type-reason">reason()</a>}</tt></li></ul></p>
+</div><p>String of Bits entropy from CharSet
+    <ul>
+      <li><b>Bits</b> - Entropy bits for string</li>
+      <li><b>CharSet</b> - Characters to use</li>
+    </ul></p>
+
+<h3 class="function"><a name="random_string-3">random_string/3</a></h3>
+<div class="spec">
+<p><tt>random_string(Bits, CharSet, Bytes) -&gt; String</tt>
+<ul class="definitions"><li><tt>Bits = integer()</tt></li><li><tt>CharSet = <a href="#type-charset">charset()</a></tt></li><li><tt>Bytes = binary()</tt></li><li><tt>String = binary() | {error, <a href="#type-reason">reason()</a>}</tt></li></ul></p>
+</div><p>String of Bits entropy from CharSet using Bytes
+    <ul>
+      <li><b>Bits</b> - Entropy bits for string</li>
+      <li><b>CharSet</b> - Characters to use</li>
+      <li><b>Bytes</b> - Bytes to use</li>
+    </ul></p>
+
+<h3 class="function"><a name="session_id-0">session_id/0</a></h3>
+<div class="spec">
+<p><tt>session_id() -&gt; String</tt>
+<ul class="definitions"><li><tt>String = binary()</tt></li></ul></p>
+</div><p>Session ID
+  Returns random string suitable for 128-bit OWASP Session ID using predefined base 32 characters.</p>
+
+<h3 class="function"><a name="session_id-1">session_id/1</a></h3>
+<div class="spec">
+<p><tt>session_id(CharSet) -&gt; String</tt>
+<ul class="definitions"><li><tt>CharSet = <a href="#type-charset">charset()</a></tt></li><li><tt>String = binary() | {error, <a href="#type-reason">reason()</a>}</tt></li></ul></p>
+</div><p>Session ID
+    <ul>
+      <li><b>CharSet</b> - Characters to use</li>
+    </ul>
+ 
+  Returns random string suitable for 128-bit OWASP Session ID.</p>
+
+<h3 class="function"><a name="small_id-0">small_id/0</a></h3>
+<div class="spec">
+<p><tt>small_id() -&gt; String</tt>
+<ul class="definitions"><li><tt>String = binary()</tt></li></ul></p>
+</div><p>Small ID
+  Returns random string with a 1 in a million chance of repeat in 30 strings using the predefined
+  base 32 characters.</p>
+
+<h3 class="function"><a name="small_id-1">small_id/1</a></h3>
+<div class="spec">
+<p><tt>small_id(CharSet) -&gt; String</tt>
+<ul class="definitions"><li><tt>CharSet = <a href="#type-charset">charset()</a></tt></li><li><tt>String = binary() | {error, <a href="#type-reason">reason()</a>}</tt></li></ul></p>
+</div><p>Small ID
+    <ul>
+      <li><b>CharSet</b> - Characters to use</li>
+    </ul>
+ 
+  Returns random string with a 1 in a million chance of repeat in 30 strings</p>
+
+<h3 class="function"><a name="ten_p-1">ten_p/1</a></h3>
+<div class="spec">
+<p><tt>ten_p(Power) -&gt; TenPower</tt>
+<ul class="definitions"><li><tt>Power = number()</tt></li><li><tt>TenPower = number()</tt></li></ul></p>
+</div><p><p>Power of ten</p>
+ 
+  <p>Returns 10 raised to power</p>
+ 
+  Convenience function for specifying total number of strings and  acceptable associated risk</p>
+
+<h3 class="function"><a name="token-0">token/0</a></h3>
+<div class="spec">
+<p><tt>token() -&gt; String</tt>
+<ul class="definitions"><li><tt>String = binary()</tt></li></ul></p>
+</div><p>Token
+  Returns random string with 256 bits of entropy using predefined URL and file system safe
+  characters.</p>
+
+<h3 class="function"><a name="token-1">token/1</a></h3>
+<div class="spec">
+<p><tt>token(CharSet) -&gt; String</tt>
+<ul class="definitions"><li><tt>CharSet = <a href="#type-charset">charset()</a></tt></li><li><tt>String = binary() | {error, <a href="#type-reason">reason()</a>}</tt></li></ul></p>
+</div><p>Token
+    <ul>
+      <li><b>CharSet</b> - Characters to use</li>
+    </ul>
+ 
+  Returns random string with 256 bits of entropy.</p>
+
+<h3 class="function"><a name="valid_bytes-3">valid_bytes/3</a></h3>
+<div class="spec">
+<p><tt>valid_bytes(Bits, CharSet, Bytes) -&gt; Result</tt>
+<ul class="definitions"><li><tt>Bits = integer()</tt></li><li><tt>CharSet = <a href="#type-charset">charset()</a></tt></li><li><tt>Bytes = binary()</tt></li><li><tt>Reason = <a href="#type-reason">reason()</a></tt></li><li><tt>Result = true | {error, Reason}</tt></li></ul></p>
+</div><p>Validate Bytes
+    <ul>
+      <li><b>Bits</b> - Entropy bits for string</li>
+      <li><b>CharSet</b> - Characters in use</li>
+      <li><b>Bytes</b> - Bytes in use</li>
+    </ul>
+    Validates:
+    <ul>
+      <li>Bytes must be sufficient to generate entropy Bits string from CharSet</li>
+    </ul></p>
+
+<h3 class="function"><a name="valid_charset-1">valid_charset/1</a></h3>
+<div class="spec">
+<p><tt>valid_charset(CharSet) -&gt; Result</tt>
+<ul class="definitions"><li><tt>CharSet = <a href="#type-charset">charset()</a></tt></li><li><tt>Reason = <a href="#type-reason">reason()</a></tt></li><li><tt>Result = true | {error, Reason}</tt></li></ul></p>
+</div><p>Validate CharSet
+    <ul>
+      <li><b>CharSet</b> - Characters to use</li>
+    </ul>
+    Validates:
+    <ul>
+      <li>CharSet must have 2, 4, 8, 16, 32, or 64 characters</li>
+      <li>Characters must by unique</li>
+    </ul></p>
+<hr>
+
+<div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<p><i>Generated by EDoc</i></p>
+</body>
+</html>
