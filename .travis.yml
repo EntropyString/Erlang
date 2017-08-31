@@ -1,4 +1,4 @@
-language: elixir
+language: erlang
 sudo: false
 
 otp_release:
