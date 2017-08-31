@@ -10,6 +10,9 @@
 -module(entropy_string).
 -author("paul@knoxen.com").
 
+%% Prevent use of erlang:ceil which is not available until OTP 20
+-compile({no_auto_import,[ceil/1]}).
+
 -define(CHAR_SET_64, <<"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_">>).
 -define(CHAR_SET_32, <<"2346789bdfghjmnpqrtBDFGHJLMNPQRT">>).
 -define(CHAR_SET_16, <<"0123456789abcdef">>).
@@ -560,3 +563,18 @@ ndx_fn(CharSet) ->
       Ndx
   end.
 
+%%--------------------------------------------------------------------------------------------------
+%%
+%% ceil/1
+%% 
+%%   Needed for OTP < 20
+%%
+%%--------------------------------------------------------------------------------------------------
+ceil(X) when X < 0 ->
+  trunc(X);
+ceil(X) ->
+  T = trunc(X),
+  case X - T == 0 of
+    true -> T;
+    false -> T + 1
+  end.
