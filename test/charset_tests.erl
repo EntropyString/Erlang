@@ -56,3 +56,22 @@ invalid_charset_test() ->
         {error, _} = entropy_string:random_string(16, binary:list_to_bin(lists:seq(1,N)))
     end,
     lists:filter(fun(N) -> round(math:log2(N)) /= math:log2(N) end, lists:seq(1,65))).
+
+%% Prevent use of erlang:ceil which is not available until OTP 20
+-compile({no_auto_import,[ceil/1]}).
+
+%%--------------------------------------------------------------------------------------------------
+%%
+%% ceil/1
+%% 
+%%   Needed for OTP < 20
+%%
+%%--------------------------------------------------------------------------------------------------
+ceil(X) when X < 0 ->
+  trunc(X);
+ceil(X) ->
+  T = trunc(X),
+  case X - T == 0 of
+    true -> T;
+    false -> T + 1
+  end.

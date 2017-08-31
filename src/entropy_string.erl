@@ -10,9 +10,6 @@
 -module(entropy_string).
 -author("paul@knoxen.com").
 
-%% Prevent use of erlang:ceil which is not available until OTP 20
--compile({no_auto_import,[ceil/1]}).
-
 -define(CHAR_SET_64, <<"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_">>).
 -define(CHAR_SET_32, <<"2346789bdfghjmnpqrtBDFGHJLMNPQRT">>).
 -define(CHAR_SET_16, <<"0123456789abcdef">>).
@@ -562,6 +559,9 @@ ndx_fn(CharSet) ->
       <<_Skip:Offset, Ndx:BitsPerChar, _Rest/bitstring>> = Bytes,
       Ndx
   end.
+
+%% Prevent use of erlang:ceil which is not available until OTP 20. Remove when possible.
+-compile({no_auto_import,[ceil/1]}).
 
 %%--------------------------------------------------------------------------------------------------
 %%
