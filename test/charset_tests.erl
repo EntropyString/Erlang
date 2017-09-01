@@ -34,7 +34,7 @@ bytes_needed_test() ->
         lists:foreach(
           fun(CharSet) ->
               BytesNeeded = entropy_string:bytes_needed(Bits, CharSet),
-              AtLeast = math:ceil(Bits / ?BITS_PER_BYTE),
+              AtLeast = ceil(Bits / ?BITS_PER_BYTE),
               ?assert(AtLeast =< BytesNeeded),
               ?assert(BytesNeeded =< AtLeast+1)
           end,
