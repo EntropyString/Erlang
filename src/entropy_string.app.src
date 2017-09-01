@@ -12,5 +12,5 @@
  ,{modules, []}
  ,{maintainers, ["Paul Rogers"]}
  ,{licenses, ["MIT"]}
- ,{links, ["GitHub", "https://github.com/EntropyString/Erlang"]}
+ ,{links, [{"Github", "https://github.com/EntropyString/Erlang"}]}
  ]}.
