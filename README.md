@@ -21,7 +21,7 @@ Add to `rebar.config`
 
   ```erlang
   {deps, [
-       ...
+...
        {entropy_string, {git, "https://github.com/EntropyString/Erlang.git", {tag, "1.0.0"}}}
    ]}.
   ```
@@ -135,7 +135,7 @@ Ah, now we're getting somewhere. The answer to question 3 might lead to the furt
 
 *I need to generate 10,000 random, unique IDs*.
 
-And the cat's out of the bag. We're getting at the real need, and it's not the same as the original statement. The developer needs *uniqueness* across a potentail total of some number of strings. The length of the string is a by-product of the uniqueness, not the goal.
+And the cat's out of the bag. We're getting at the real need, and it's not the same as the original statement. The developer needs *uniqueness* across some potential number of strings. The length of the string is a by-product of the uniqueness, not the goal, and should not be the primary specification for the random string.
 
 As noted in the [Overview](#Overview), guaranteeing uniqueness is difficult, so we'll replace that declaration with one of *probabilistic uniqueness* by asking:
 
@@ -230,7 +230,7 @@ The resulting string of __0__'s and __1__'s doesn't look quite right. Perhaps yo
   <<"HTTTHHTTHH">>
   ```
 
-As another example, we saw in [Character Sets](#CharacterSets) the predefined characters for `charSet16` are **0123456789abcdef**. Suppose you like uppercase hexadecimal letters instead.
+As another example, we saw in [Character Sets](#CharacterSets) the predefined hex characters for `charSet16` are lowercase. Suppose you like uppercase hexadecimal letters instead.
 
   ```erlang
   2> entropy_string:random_string(48, <<"0123456789ABCDEF">>).
