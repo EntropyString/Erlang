@@ -10,24 +10,18 @@
 -module(entropy_string).
 -author("paul@knoxen.com").
 
--define(CHAR_SET_64, <<"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_">>).
--define(CHAR_SET_32, <<"2346789bdfghjmnpqrtBDFGHJLMNPQRT">>).
--define(CHAR_SET_16, <<"0123456789abcdef">>).
--define(CHAR_SET_8,  <<"01234567">>).
--define(CHAR_SET_4,  <<"ATCG">>).
--define(CHAR_SET_2,  <<"01">>).
-
 -define(BITS_PER_BYTE, 8).
+
+-define(SMALL_ID_BITS,    29).
+-define(MEDIUM_ID_BITS,   69).
+-define(LARGE_ID_BITS,    99).
+-define(SESSION_ID_BITS, 128).
+-define(TOKEN_BITS,      256).
 
 %%==================================================================================================
 %% API
 %%==================================================================================================
--export([charset64/0
-        ,charset32/0
-        ,charset16/0
-        ,charset8/0
-        ,charset4/0
-        ,charset2/0
+-export([charset/1
         ,small_id/0
         ,small_id/1
         ,medium_id/0
@@ -52,99 +46,54 @@
 %%==================================================================================================
 %% Types
 %%==================================================================================================
--type charset() :: binary().
+-type charset() :: charset64 | charset32 | charset16 | charset8 | charset4 | charset2 | binary().
 -type reason()  :: binary().
 
 %%==================================================================================================
 %% Public Functions
 %%==================================================================================================
 %%--------------------------------------------------------------------------------------------------
-%% @doc
-%% URl and file system safe CharSet from <a href="https://tools.ietf.org/html/rfc4648#section-5">RFC 4648</a>.
+%% @doc Predefined <em>CharSet</em>s
 %%
-%%   <b>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_</b>
+%%   <ul>
+%%     <li><code>charset64</code> : <b>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_</b></li>
+%%     <li><code>charset32</code> : <b>2346789bdfghjmnpqrtBDFGHJLMNPQRT</b></li>
+%%     <li><code>charset16</code> : <b>0123456789abcdef</b></li>
+%%     <li><code>charset8</code> : <b>01234567</b></li>
+%%     <li><code>charset4</code> : <b>ATCG</b></li>
+%%     <li><code>charset2</code> : <b>01</b></li>
+%%   </ul>
 %%
--spec charset64() -> String when
-    String :: charset().
+-spec charset(CharSet) -> String when
+    CharSet :: charset64 | charset32 | charset16 | charset8 | charset4 | charset2,
+    String :: binary().
 %%--------------------------------------------------------------------------------------------------
-charset64() ->
-  ?CHAR_SET_64.
+charset(charset64) ->
+  <<"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_">>;
+charset(charset32) ->
+  <<"2346789bdfghjmnpqrtBDFGHJLMNPQRT">>;
+charset(charset16) ->
+  <<"0123456789abcdef">>;
+charset(charset8) ->
+  <<"01234567">>;
+charset(charset4) ->
+  <<"ATCG">>;
+charset(charset2) ->
+  <<"01">>.
 
 %%--------------------------------------------------------------------------------------------------
-%% @doc
-%% Base 32 character set.
+%% @doc Small ID using <code>charset32</code>.
 %%
-%%   <b>2346789bdfghjmnpqrtBDFGHJLMNPQRT</b>
-%%
--spec charset32() -> String when
-    String :: charset().
-%%--------------------------------------------------------------------------------------------------
-charset32() ->
-  ?CHAR_SET_32.
-
-%%--------------------------------------------------------------------------------------------------
-%% @doc
-%% Hexadecimal character set.
-%%
-%%   <b>0123456789abcdef</b>
-%%
--spec charset16() -> String when
-    String :: charset().
-%%--------------------------------------------------------------------------------------------------
-charset16() ->
-  ?CHAR_SET_16.
-
-%%--------------------------------------------------------------------------------------------------
-%% @doc
-%% Octal character set.
-%%
-%%   <b>01234567</b>
-%%
--spec charset8() -> String when
-    String :: charset().
-%%--------------------------------------------------------------------------------------------------
-charset8() ->
-  ?CHAR_SET_8.
-
-%%--------------------------------------------------------------------------------------------------
-%% @doc
-%% DNA alphabet.
-%%
-%%   <b>ATCG</b>
-%%
--spec charset4() -> String when
-    String :: charset().
-%%--------------------------------------------------------------------------------------------------
-charset4() ->
-  ?CHAR_SET_4.
-
-%%--------------------------------------------------------------------------------------------------
-%% @doc
-%% Binary character set.
-%%
-%%   <b>01</b>
-%%
--spec charset2() -> String when
-    String :: charset().
-%%--------------------------------------------------------------------------------------------------
-charset2() ->
-  ?CHAR_SET_2.
-
-%%--------------------------------------------------------------------------------------------------
-%% @doc Small ID
-%% Returns random string with a 1 in a million chance of repeat in 30 strings using the predefined
-%% base 32 characters.
+%% Returns random string with a 1 in a million chance of repeat in 30 strings using
+%% <code>charset32</code>.
 -spec small_id() -> String when
     String  :: binary().
 %%--------------------------------------------------------------------------------------------------
 small_id() ->
-  small_id(?CHAR_SET_32).
+  small_id(charset32).
 
 %%--------------------------------------------------------------------------------------------------
-%% @doc Small ID
-%%   <ul>
-%%     <li><b>CharSet</b> - Characters to use</li>
-%%   </ul>
+%% @doc Small ID using <em>CharSet</em>
 %%
 %% Returns random string with a 1 in a million chance of repeat in 30 strings
 -spec small_id(CharSet) -> String when
@@ -152,23 +101,21 @@ small_id() ->
     String  :: binary() | {error, reason()}.
 %%--------------------------------------------------------------------------------------------------
 small_id(CharSet) ->
-  random_string(29, CharSet).
+  random_string(?SMALL_ID_BITS, CharSet).
 
 %%--------------------------------------------------------------------------------------------------
-%% @doc Medium ID
+%% @doc Medium ID using <code>charset32</code>.
+%%
 %% Returns random string with a 1 in a billion chance of repeat in a million strings using
-%% the predefined base 32 characters.
+%% <code>charset32</code>.
 -spec medium_id() -> String when
     String  :: binary().
 %%--------------------------------------------------------------------------------------------------
 medium_id() ->
-  medium_id(?CHAR_SET_32).
+  medium_id(charset32).
 
 %%--------------------------------------------------------------------------------------------------
-%% @doc Medium ID
-%%   <ul>
-%%     <li><b>CharSet</b> - Characters to use</li>
-%%   </ul>
+%% @doc Medium ID using <em>CharSet</em>
 %%
 %% Returns random string with a 1 in a billion chance of repeat in a million strings.
 -spec medium_id(CharSet) -> String when
@@ -176,23 +123,21 @@ medium_id() ->
     String  :: binary() | {error, reason()}.
 %%--------------------------------------------------------------------------------------------------
 medium_id(CharSet) ->
-  random_string(69, CharSet).
+  random_string(?MEDIUM_ID_BITS, CharSet).
 
 %%--------------------------------------------------------------------------------------------------
-%% @doc Large ID
+%% @doc Large ID using <code>charset32</code>.
+%%
 %% Returns random string with a 1 in a trillion chance of repeat in a billion strings using
-%% the predefined base 32 characters.
+%% <code>charset32</code>.
 -spec large_id() -> String when
     String  :: binary().
 %%--------------------------------------------------------------------------------------------------
 large_id() ->
-  large_id(?CHAR_SET_32).
+  large_id(charset32).
 
 %%--------------------------------------------------------------------------------------------------
-%% @doc Large ID
-%%   <ul>
-%%     <li><b>CharSet</b> - Characters to use</li>
-%%   </ul>
+%% @doc Large ID using <em>CharSet</em>
 %%
 %% Returns random string with a 1 in a trillion chance of repeat in a billion strings.
 -spec large_id(CharSet) -> String when
@@ -200,22 +145,20 @@ large_id() ->
     String  :: binary() | {error, reason()}.
 %%--------------------------------------------------------------------------------------------------
 large_id(CharSet) ->
-  random_string(99, CharSet).
+  random_string(?LARGE_ID_BITS, CharSet).
 
 %%--------------------------------------------------------------------------------------------------
-%% @doc Session ID
-%% Returns random string suitable for 128-bit OWASP Session ID using predefined base 32 characters.
+%% @doc Session ID using <code>charset32</code>.
+%%
+%% Returns random string suitable for 128-bit OWASP Session ID using <code>charset32</code>.
 -spec session_id() -> String when
     String  :: binary().
 %%--------------------------------------------------------------------------------------------------
 session_id() ->
-  session_id(?CHAR_SET_32).
+  session_id(charset32).
 
 %%--------------------------------------------------------------------------------------------------
-%% @doc Session ID
-%%   <ul>
-%%     <li><b>CharSet</b> - Characters to use</li>
-%%   </ul>
+%% @doc Session ID using <em>CharSet</em>
 %%
 %% Returns random string suitable for 128-bit OWASP Session ID.
 -spec session_id(CharSet) -> String when
@@ -226,20 +169,18 @@ session_id(CharSet) ->
   random_string(128, CharSet).
 
 %%--------------------------------------------------------------------------------------------------
-%% @doc Token
-%% Returns random string with 256 bits of entropy using predefined URL and file system safe
+%% @doc Token using <code>charset32</code>.
+%%
+%% Returns random string with 256 bits of entropy using <code>charset32</code>
 %% characters.
 -spec token() -> String when
     String  :: binary().
 %%--------------------------------------------------------------------------------------------------
 token() ->
-  token(?CHAR_SET_32).
+  token(charset32).
 
 %%--------------------------------------------------------------------------------------------------
-%% @doc Token
-%%   <ul>
-%%     <li><b>CharSet</b> - Characters to use</li>
-%%   </ul>
+%% @doc Token using <em>CharSet</em>
 %%
 %% Returns random string with 256 bits of entropy.
 -spec token(CharSet) -> String when
@@ -255,16 +196,14 @@ token(CharSet) ->
 %%
 %%==================================================================================================
 %%--------------------------------------------------------------------------------------------------
-%% @doc String of Bits entropy from predefined base 32 charset
-%%   <ul>
-%%     <li><b>Bits</b> - Entropy bits for string</li>
-%%   </ul>
+%% @doc String of entropy <em>Bits</em> using <code>charset32</code>.
+%%
 -spec random_string(Bits) -> String when
-    Bits    :: integer(),
+    Bits    :: number(),
     String  :: binary().
 %%--------------------------------------------------------------------------------------------------
 random_string(Bits) ->
-  random_string(Bits, charset32()).
+  random_string(Bits, charset32).
 
 %%==================================================================================================
 %%
@@ -272,23 +211,20 @@ random_string(Bits) ->
 %%
 %%==================================================================================================
 %%--------------------------------------------------------------------------------------------------
-%% @doc String of Bits entropy from CharSet
-%%   <ul>
-%%     <li><b>Bits</b> - Entropy bits for string</li>
-%%     <li><b>CharSet</b> - Characters to use</li>
-%%   </ul>
+%% @doc String of entropy <em>Bits</em> using <em>CharSet</em>
+%%
 -spec random_string(Bits, CharSet) -> String when
-    Bits    :: integer(),
+    Bits    :: number(),
     CharSet :: charset(),
     String  :: binary() | {error, reason()}.
 %%--------------------------------------------------------------------------------------------------
-random_string(Bits, CharSet) 
-  when CharSet == ?CHAR_SET_64;
-       CharSet == ?CHAR_SET_32;
-       CharSet == ?CHAR_SET_16;
-       CharSet == ?CHAR_SET_8;
-       CharSet == ?CHAR_SET_4;
-       CharSet == ?CHAR_SET_2 ->
+random_string(Bits, CharSet) when
+    CharSet =:= charset64;
+    CharSet =:= charset32;
+    CharSet =:= charset16;
+    CharSet =:= charset8;
+    CharSet =:= charset4;
+    CharSet =:= charset2 ->
   es_string(Bits, CharSet);
 random_string(Bits, CharSet) ->
   case valid_charset(CharSet) of
@@ -308,29 +244,25 @@ es_string(Bits, CharSet) ->
 
 %%==================================================================================================
 %%
-%% string(bits, charset, bytes)
+%% random_string(bits, charset, bytes)
 %%
 %%==================================================================================================
 %%--------------------------------------------------------------------------------------------------
-%% @doc String of Bits entropy from CharSet using Bytes
-%%   <ul>
-%%     <li><b>Bits</b> - Entropy bits for string</li>
-%%     <li><b>CharSet</b> - Characters to use</li>
-%%     <li><b>Bytes</b> - Bytes to use</li>
-%%   </ul>
+%% @doc String of entropy <em>Bits</em> using <em>CharSet</em> and <em>Bytes</em>
+%%
 -spec random_string(Bits, CharSet, Bytes) -> String when
     Bits    :: integer(),
     CharSet :: charset(),
     Bytes   :: binary(),
     String  :: binary() | {error, reason()}.
 %%--------------------------------------------------------------------------------------------------
-random_string(Bits, CharSet, Bytes)
-  when CharSet == ?CHAR_SET_64;
-       CharSet == ?CHAR_SET_32;
-       CharSet == ?CHAR_SET_16;
-       CharSet == ?CHAR_SET_8;
-       CharSet == ?CHAR_SET_4;
-       CharSet == ?CHAR_SET_2 ->
+random_string(Bits, CharSet, Bytes) when
+    CharSet =:= charset64;
+    CharSet =:= charset32;
+    CharSet =:= charset16;
+    CharSet =:= charset8;
+    CharSet =:= charset4;
+    CharSet =:= charset2 ->
   es_string(Bits, CharSet, Bytes);
 random_string(Bits, CharSet, Bytes) ->
   case valid_charset(CharSet) of
@@ -350,6 +282,14 @@ es_string(Bits, CharSet, Bytes) ->
 %%--------------------------------------------------------------------------------------------------
 %% Calc number of characters and forward
 %%--------------------------------------------------------------------------------------------------
+es_string_bytes(Bits, CharSet, Bytes) when
+    CharSet =:= charset64;
+    CharSet =:= charset32;
+    CharSet =:= charset16;
+    CharSet =:= charset8;
+    CharSet =:= charset4;
+    CharSet =:= charset2 ->
+  es_string_bytes(Bits, charset(CharSet), Bytes);
 es_string_bytes(Bits, CharSet, Bytes) ->
   BitsPerChar = bits_per_char(CharSet),
   NdxFn = ndx_fn(CharSet),
@@ -375,6 +315,8 @@ es_string_count(CharCount, NdxFn, CharSet, Bytes, Chars) ->
 %%--------------------------------------------------------------------------------------------------
 %% @doc Power of ten
 %%
+%% @deprecated Use 1.0eNN instead.
+%%
 %% Returns 10 raised to power
 %%
 %% Convenience function for specifying total number of strings and  acceptable associated risk
@@ -391,11 +333,8 @@ ten_p(Power) ->
 %%
 %%==================================================================================================
 %%--------------------------------------------------------------------------------------------------
-%% @doc Entropy bits required for total number of strings with given risk.
-%%   <ul>
-%%     <li><b>Total</b> - Total number of strings</li>
-%%     <li><b>Risk</b> - Risk of repeat in Total strings</li>
-%%   </ul>
+%% @doc Entropy bits required for <em>Total</em> number of strings with given <em>Risk</em>.
+%%
 -spec bits(Total, Risk) -> Bits when
     Total :: number(),
     Risk  :: number(),
@@ -424,19 +363,17 @@ bits(_, _) ->
 %%==================================================================================================
 %%--------------------------------------------------------------------------------------------------
 %% @doc Entropy bits per character.
-%%   <ul>
-%%     <li><b>CharSet</b> - Characters in use</li>
-%%   </ul>
+%%
 -spec bits_per_char(CharSet) -> Bits when
     CharSet :: charset(),
     Bits    :: integer().
 %%--------------------------------------------------------------------------------------------------
-bits_per_char(?CHAR_SET_64) -> 6;
-bits_per_char(?CHAR_SET_32) -> 5;
-bits_per_char(?CHAR_SET_16) -> 4;
-bits_per_char(?CHAR_SET_8)  -> 3;
-bits_per_char(?CHAR_SET_4)  -> 2;
-bits_per_char(?CHAR_SET_2)  -> 1;
+bits_per_char(charset64) -> 6;
+bits_per_char(charset32) -> 5;
+bits_per_char(charset16) -> 4;
+bits_per_char(charset8)  -> 3;
+bits_per_char(charset4)  -> 2;
+bits_per_char(charset2)  -> 1;
 bits_per_char(CharSet) when is_binary(CharSet) ->
   round(math:log2(byte_size(CharSet))).
 
@@ -446,13 +383,10 @@ bits_per_char(CharSet) when is_binary(CharSet) ->
 %%
 %%==================================================================================================
 %%--------------------------------------------------------------------------------------------------
-%% @doc Bytes needed to form string of entropy <b>Bits</b> from characters in <b>CharSet</b>
-%%   <ul>
-%%     <li><b>Bits</b> - Entropy bits for string</li>
-%%     <li><b>CharSet</b> - Characters in use</li>
-%%   </ul>
+%% @doc Bytes needed to form string of entropy <em>Bits</em> using <em>CharSet</em>
+%%
 -spec bytes_needed(Bits, CharSet) -> ByteCount when
-    Bits      :: integer(),
+    Bits      :: number(),
     CharSet   :: charset(),
     ByteCount :: integer().
 %%--------------------------------------------------------------------------------------------------
@@ -468,16 +402,14 @@ bytes_needed(Bits, CharSet) ->
 %%==================================================================================================
 %%--------------------------------------------------------------------------------------------------
 %% @doc Validate CharSet
-%%   <ul>
-%%     <li><b>CharSet</b> - Characters to use</li>
-%%   </ul>
+%%
 %%   Validates:
 %%   <ul>
 %%     <li>CharSet must have 2, 4, 8, 16, 32, or 64 characters</li>
 %%     <li>Characters must by unique</li>
 %%   </ul>
 -spec valid_charset(CharSet) -> Result when
-    CharSet :: charset(),
+    CharSet :: binary(),
     Reason  :: reason(),
     Result  :: true | {error, Reason}.
 %%--------------------------------------------------------------------------------------------------
@@ -495,18 +427,14 @@ valid_charset(CharSet) when is_binary(CharSet) ->
 %%==================================================================================================
 %%--------------------------------------------------------------------------------------------------
 %% @doc Validate Bytes
-%%   <ul>
-%%     <li><b>Bits</b> - Entropy bits for string</li>
-%%     <li><b>CharSet</b> - Characters in use</li>
-%%     <li><b>Bytes</b> - Bytes in use</li>
-%%   </ul>
+%%
 %%   Validates:
 %%   <ul>
-%%     <li>Bytes must be sufficient to generate entropy Bits string from CharSet</li>
+%%     <li>Bytes must be sufficient to generate entropy <em>Bits</em> using <em>CharSet</em></li>
 %%   </ul>
 -spec valid_bytes(Bits, CharSet, Bytes) -> Result when
-    Bits    :: integer(),
-    CharSet :: charset(),
+    Bits    :: number(),
+    CharSet :: binary(),
     Bytes   :: binary(),
     Reason  :: reason(),
     Result  :: true | {error, Reason}.
@@ -526,7 +454,7 @@ valid_bytes(Bits, CharSet, Bytes) when is_binary(Bytes) ->
 %% Internal functions
 %%====================================================================
 %%
-%% Determine if CharSet elements unique
+%% Determine if <em>CharSet</em> elements unique
 %%
 unique(CharSet) ->
   unique(true, CharSet).

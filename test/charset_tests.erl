@@ -3,28 +3,14 @@
 -include_lib("eunit/include/eunit.hrl").
 
 -define(BITS_PER_BYTE, 8).
--define(CHAR_SET_64, entropy_string:charset64()).
--define(CHAR_SET_32, entropy_string:charset32()).
--define(CHAR_SET_16, entropy_string:charset16()).
--define(CHAR_SET_8,  entropy_string:charset8()).
--define(CHAR_SET_4,  entropy_string:charset4()).
--define(CHAR_SET_2,  entropy_string:charset2()).
--define(CHAR_SETS,
-        [?CHAR_SET_64, ?CHAR_SET_32, ?CHAR_SET_16, ?CHAR_SET_8, ?CHAR_SET_4, ?CHAR_SET_2]).
 
-%% charset_test() ->
-%%   ?assertEqual(?CHAR_SET_64, entropy_string:charset64()),
-%%   ?assertEqual(?CHAR_SET_32, entropy_string:charset32()),
-%%   ?assertEqual(?CHAR_SET_16, entropy_string:charset16()),
-%%   ?assertEqual(?CHAR_SET_8,  entropy_string:charset8()),
-%%   ?assertEqual(?CHAR_SET_4,  entropy_string:charset4()),
-%%   ?assertEqual(?CHAR_SET_2,  entropy_string:charset2()).
+-define(CHAR_SETS, [charset64, charset32, charset16, charset8, charset4, charset2]).
 
 bits_per_char_test() ->
   lists:foreach(
     fun(CharSet) ->
         Actual = entropy_string:bits_per_char(CharSet),
-        Expected = round(math:log2(byte_size(CharSet))),
+        Expected = round(math:log2(byte_size(entropy_string:charset(CharSet)))),
         ?assertEqual(Expected, Actual)
     end, ?CHAR_SETS).
 
@@ -43,12 +29,12 @@ bytes_needed_test() ->
     lists:seq(0,17)).
 
 charset_len_test() ->
-  ?assertEqual(64, byte_size(?CHAR_SET_64)),
-  ?assertEqual(32, byte_size(?CHAR_SET_32)),
-  ?assertEqual(16, byte_size(?CHAR_SET_16)),
-  ?assertEqual( 8, byte_size(?CHAR_SET_8)),
-  ?assertEqual( 4, byte_size(?CHAR_SET_4)),
-  ?assertEqual( 2, byte_size(?CHAR_SET_2)).
+  ?assertEqual(64, byte_size(entropy_string:charset(charset64))),
+  ?assertEqual(32, byte_size(entropy_string:charset(charset32))),
+  ?assertEqual(16, byte_size(entropy_string:charset(charset16))),
+  ?assertEqual( 8, byte_size(entropy_string:charset(charset8))),
+  ?assertEqual( 4, byte_size(entropy_string:charset(charset4))),
+  ?assertEqual( 2, byte_size(entropy_string:charset(charset2))).
 
 invalid_charset_test() ->
   lists:foreach(

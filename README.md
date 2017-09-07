@@ -62,9 +62,7 @@ There are six predefined character sets. By default, `random_string/1` uses `cha
   ```erlang
   2> Bits = entropy_string:bits(1.0e6, 1.0e9).
   68.7604899926346
-  3> CharSet = entropy_string:charset16().
-  <<"0123456789abcdef">>
-  4> entropy_string:random_string(Bits, CharSet).
+  3> entropy_string:random_string(Bits, charset16).
   <<"99d535fbcac884e875">>
   ```
 
@@ -73,9 +71,7 @@ Custom characters are also supported. Using uppercase hexadecimal characters:
   ```erlang
   2> Bits = entropy_string:bits(1.0e6, 1.0e9).
   68.7604899926346
-  3> CharSet = <<"0123456789ABCDEF">>.
-  <<"0123456789ABCDEF">>
-  4> entropy_string:random_string(Bits, CharSet).
+  3> entropy_string:random_string(Bits, <<"0123456789ABCDEF">>).
   <<"6099EA0B59F9813D5F">>
   ```
 
@@ -89,9 +85,7 @@ Convenience functions are provided for common scenarios. For example, OWASP sess
 Session ID using [RFC 4648](https://tools.ietf.org/html/rfc4648#section-5) file system and URL safe characters:
 
   ```erlang
-  2> CharSet = entropy_string:charset64().
-  <<"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_">>
-  3> entropy_string:session_id(CharSet).
+  2> entropy_string:session_id(charset64).
   <<"4VMiJmD23Aq2Px7vGnd8Fi">>
   ```
 
@@ -158,9 +152,7 @@ Let's use `entropy_string` to help this developer by generating 5 IDs:
   ```erlang
   2> Bits = entropy_string:bits(10000, 1000000).
   45.50699332842307
-  3> CharSet = entropy_string:charset16().
-  <<"0123456789abcdef">>
-  4> lists:map(fun(_) -> entropy_string:random_string(Bits, CharSet) end, lists:seq(1,5)).
+  3> lists:map(fun(_) -> entropy_string:random_string(Bits, charset16) end, lists:seq(1,5)).
   [<<"9fd4090d336f">>,<<"692c599701c9">>,<<"175a5f34bb89">>,<<"144cc6119460">>,<<"dd61e0a66605">>]
   ```
 
@@ -173,7 +165,7 @@ To generate the IDs, we first use
 to determine how much entropy is needed to generate a potential of _10000 strings_ while satisfy the probabilistic uniqueness of a _1 in a million risk_ of repeat. We can see from the output of the Erland shell it's about **45.51** bits. Inside the list comprehension we used
 
   ```erlang
-  entropy_string:random_string(Bits, CharSet)
+  entropy_string:random_string(Bits, charset16)
   ```
 
 to actually generate a random string of the specified entropy using hexadecimal (charset16) characters. Looking at the IDs, we can see each is 12 characters long. Again, the string length is a by-product of the characters used to represent the entropy we needed. And it seems the developer didn't really need 16 characters after all.
@@ -217,9 +209,7 @@ You may, of course, want to choose the characters used, which is covered next in
 Being able to easily generate random strings is great, but what if you want to specify your own characters? For example, suppose you want to visualize flipping a coin to produce 10 bits of entropy.
 
   ```erlang
-  2> CharSet = entropy_string:charset2().
-  <<"01">>
-  3> entropy_string:random_string(10, CharSet).
+  2> entropy_string:random_string(10, charset2).
   <<"0100111101">>
   ```
 
@@ -327,7 +317,7 @@ Suppose we want a string capable of 30 bits of entropy using 32 characters. We c
   ```erlang
   2> Bytes = <<16#fac89664:32>>.
   <<250,200,150,100>>
-  3> entropy_string:random_string(30, entropy_string:charset32(), Bytes).
+  3> entropy_string:random_string(30, entropy_string:charset(charset32), Bytes).
   <<"Th7fjL">>
   ```
  
@@ -336,7 +326,7 @@ The `Bytes` provided can come from any source. However, an error is returned if 
   ```erlang
   2> Bytes = <<16#fac89664:32>>.
   <<250,200,150,100>>
-  3> entropy_string:random_string(32, entropy_string:charset32(), Bytes).
+  3> entropy_string:random_string(32, charset32, Bytes).
   {error,<<"Insufficient bytes: need 5 and got 4">>}
   ```
 
@@ -345,7 +335,7 @@ Note the number of bytes needed is dependent on the number of characters in the 
 `entropy_string:bytes_needed/2` can be used to determine the number of bytes needed to cover a specified amount of entropy for a given character set.
 
   ```erlang
-  2> entropy_string:bytes_needed(32, entropy_string:charset32()).
+  2> entropy_string:bytes_needed(32, charset32).
   5
   ```
 
