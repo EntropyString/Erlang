@@ -1,7 +1,7 @@
 {application, entropy_string
 ,[{pkg_name, "entropy_string_erl"}
  ,{description, "Efficiently generate cryptographically strong random strings of specified entropy from various character sets."}
- ,{vsn, "1.0.0"}
+ ,{vsn, "1.1.0"}
  ,{registered, []}
  ,{applications
   ,[kernel
