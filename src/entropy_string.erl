@@ -337,7 +337,7 @@ es_string_count(CharCount, NdxFn, CharSet, Bytes, Chars) ->
 %%--------------------------------------------------------------------------------------------------
 %% @doc Power of ten
 %%
-%% @deprecated Use 1.0eNN instead.
+%% @deprecated Use <code>1.0eNN</code> instead.
 %%
 %% Returns 10 raised to power
 %%
